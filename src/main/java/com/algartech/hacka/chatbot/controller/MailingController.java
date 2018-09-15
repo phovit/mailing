@@ -82,7 +82,7 @@ public class MailingController {
         return service.getTextNegociacao(view.getString());
     }
 
-    @RequestMapping(value = "/setTypeNegociation", method = RequestMethod.POST)
+    @RequestMapping(value = "/setTypeNegotiation", method = RequestMethod.POST)
     public ResponseDTO tipoNegociacao(@RequestBody GenericRequestDTO view) {
         return new ResponseDTO("Vai ser moleza! Para darmos seguimento na nossa negociação, qual o valor ideal para a entrada?");
     }
@@ -128,7 +128,7 @@ public class MailingController {
 
 
 
-    @RequestMapping(value = "/sendSMS", method = RequestMethod.POST)
+    @RequestMapping(value = "/sendSms", method = RequestMethod.POST)
     public ResponseDTO enviaSms(@RequestBody GenericRequestDTO view) {
 
         new SmsService().sendSms("34988657231", "10700342664", "00000.00000. 00000.000000 00000.000000 0 00000000000000");
