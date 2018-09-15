@@ -41,9 +41,9 @@ public class MailingJob implements Job {
                         "https://t.me/JaoNegociadorBot";
                 mail.sendEmail(mail.generateToken(mail.generateGrantCode()), "Campanha Cliente Legal", conteudo, mailing.getDes_email());
 
-                conteudo = "Olá. Nós da ChatBotGrupoF verificamos que consta um Saldo de " + mailing.getVal_princ() + " em aberto.\n" +
-                        "Acesse o link para ajudarmos nesta situação.\n" +
-                        "https://t.me/JaoNegociadorBot";
+                conteudo = "Olá. Nós da ChatBotGrupoF verificamos que consta um Saldo de R$" + mailing.getVal_princ() + " em aberto." +
+                        " Acesse o link para ajudarmos nesta situação." +
+                        " https://t.me/JaoNegociadorBot";
                 sms.sendSms(mailing.getDes_phone_1(), mailing.getCpf(), conteudo);
 
                 logger.info("Notificação enviada com sucesso!");
