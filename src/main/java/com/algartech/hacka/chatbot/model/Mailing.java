@@ -29,7 +29,7 @@ public class Mailing {
     @Field("ind_alter")
     private String ind_alter;
     @Field("des_cpf")
-    private String des_cpf;
+    private String cpf;
     @Field("nom_clien")
     private String nom_clien;
     @Field("dat_nasci")
@@ -71,7 +71,7 @@ public class Mailing {
     @Field("ind_alter_fatura")
     private String ind_alter_fatura;
 
-    public Mailing(String tip_reg, String cod_siste, Date dat_movto, String tip_inter, String cod_credor, String des_regis, String ind_alter, String des_cpf, String nom_clien, Date dat_nasci, String des_ender_resid, String des_numer_resid, String des_compl_resid, String des_bairr_resid, String des_cidad_resid, String des_estad_resid, String des_phone_1, String des_phone_2, String des_email, String tip_inter_fatura, String cod_produt, String des_contr, Date dat_venci, String num_prest, Date dat_corre, Date dat_pagam, BigDecimal val_princ, String ind_alter_fatura) {
+    public Mailing(String tip_reg, String cod_siste, Date dat_movto, String tip_inter, String cod_credor, String des_regis, String ind_alter, String cpf, String nom_clien, Date dat_nasci, String des_ender_resid, String des_numer_resid, String des_compl_resid, String des_bairr_resid, String des_cidad_resid, String des_estad_resid, String des_phone_1, String des_phone_2, String des_email, String tip_inter_fatura, String cod_produt, String des_contr, Date dat_venci, String num_prest, Date dat_corre, Date dat_pagam, BigDecimal val_princ, String ind_alter_fatura) {
         this.tip_reg = tip_reg;
         this.cod_siste = cod_siste;
         this.dat_movto = dat_movto;
@@ -79,7 +79,7 @@ public class Mailing {
         this.cod_credor = cod_credor;
         this.des_regis = des_regis;
         this.ind_alter = ind_alter;
-        this.des_cpf = des_cpf;
+        this.cpf = cpf;
         this.nom_clien = nom_clien;
         this.dat_nasci = dat_nasci;
         this.des_ender_resid = des_ender_resid;
@@ -162,12 +162,12 @@ public class Mailing {
         this.ind_alter = ind_alter;
     }
 
-    public String getDes_cpf() {
-        return des_cpf;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setDes_cpf(String des_cpf) {
-        this.des_cpf = des_cpf;
+    public void setCpf(String des_cpf) {
+        this.cpf = des_cpf;
     }
 
     public String getNom_clien() {

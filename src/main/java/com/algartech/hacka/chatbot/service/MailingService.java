@@ -4,6 +4,7 @@ import com.algartech.hacka.chatbot.jobs.MailingJob;
 import com.algartech.hacka.chatbot.model.Mailing;
 import com.algartech.hacka.chatbot.repository.MailingRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.br.CPF;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -92,7 +93,7 @@ public class MailingService {
                 mailing.setCod_credor(value[4]);
                 mailing.setDes_regis(value[5]);
                 mailing.setInd_alter(value[6]);
-                mailing.setDes_cpf(value[7]);
+                mailing.setCpf(value[7]);
                 mailing.setNom_clien(value[8]);
                 try {
                     mailing.setDat_nasci(new java.util.Date(format.parse(value[9]).getTime()));
@@ -146,5 +147,35 @@ public class MailingService {
     }
 
 
+    public String findConsolidatedByCPF(String cpf){
+        Mailing mailing = new Mailing();
+        mailing.setCpf(cpf);
+        mailing.setVal_princ(new BigDecimal(0));
+
+        List<Mailing> mailings = repository.findByCpf(cpf);
+
+        for(Mailing ml : mailings){
+            mailing.setNom_clien(ml.getNom_clien());
+            mailing.setVal_princ( mailing.getVal_princ().add(ml.getVal_princ()) );
+            if(mailing.getDat_venci() == null || mailing.getDat_venci().compareTo(ml.getDat_venci())<0){
+                mailing.setDat_venci(ml.getDat_venci());
+            }
+        }
+
+        String txtReturn = "Sua dívida atual é de R$"+getValorAvista(mailing) +" para pagamento à vista e R$ "+getValorAPrazo(mailing) +" para pagamento parcelado.\n" +
+                "Como deseja pagar sua dívida?";
+
+
+        return txtReturn;
+    }
+
+    private String getValorAvista(Mailing mailing) {
+
+        return mailing.getVal_princ().toString();
+    }
+
+    private String getValorAPrazo(Mailing mailing) {
+        return mailing.getVal_princ().toString();
+    }
 
 }

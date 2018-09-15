@@ -39,7 +39,7 @@ public class ClienteService {
         cli.setCod_credor(mailing.getCod_credor());
         cli.setDes_regis(mailing.getDes_regis());
         cli.setInd_alter(mailing.getInd_alter());
-        cli.setDes_cpf(mailing.getDes_cpf());
+        cli.setDes_cpf(mailing.getCpf());
         cli.setNom_clien(mailing.getNom_clien());
         cli.setDat_nasci(mailing.getDat_nasci());
         cli.setDes_ender_resid(mailing.getDes_ender_resid());
