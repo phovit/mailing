@@ -5,7 +5,10 @@ package com.algartech.hacka.chatbot.config;
  */
 
 import com.algartech.hacka.chatbot.model.Mailing;
+import com.algartech.hacka.chatbot.repository.ClienteRepository;
 import com.algartech.hacka.chatbot.repository.MailingRepository;
+import com.algartech.hacka.chatbot.service.ClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +24,8 @@ import java.text.SimpleDateFormat;
 public class MongoConfig {
     SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
-
+@Autowired
+private ClienteService clienteService;
     @Bean
     CommandLineRunner commandLineRunner(MailingRepository mailingRepository) {
 
@@ -34,6 +38,11 @@ public class MongoConfig {
                 mailingRepository.save(cli1);
                 mailingRepository.save(cli2);
                 mailingRepository.save(cli3);
+                clienteService.insertOrUpdateByMailing(cli1);
+                clienteService.insertOrUpdateByMailing(cli2);
+                clienteService.insertOrUpdateByMailing(cli3);
+
+
             };
         } catch (ParseException e) {
             e.printStackTrace();
