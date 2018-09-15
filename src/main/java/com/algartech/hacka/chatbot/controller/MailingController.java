@@ -55,7 +55,7 @@ public class MailingController {
 
 
     @RequestMapping(value = "/sendSms", method = RequestMethod.POST)
-    public void sendSms(@RequestParam( "phone") String phone, @RequestParam( "cpf") String cpf, @RequestParam(required = false) String texto ){
+    public void sendSms(@RequestParam(value = "phone") String phone, @RequestParam(name = "cpf") String cpf, @RequestParam(required = false) String texto ){
         new SmsService().sendSms(phone, cpf, texto);
     }
 
