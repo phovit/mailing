@@ -301,7 +301,7 @@ public class MailingService {
 
     public ResponseDTO getTextNegociacao(String formaNegociacao) {
         String str = "";
-        if("PARCELADO".equalsIgnoreCase(formaNegociacao)){
+        if("prazo".equalsIgnoreCase(formaNegociacao)){
             str = "Que bacana! Temos duas opções para negociar a sua dívida. Você pode determinar uma quantidade de parcelas ou o valor que deseja pagar mensalmente. Qual dos métodos você deseja usar?";
         }else{
             str = "Que bacana! Neste caso, você acaba de ganhar um super desconto!";
