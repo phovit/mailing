@@ -66,6 +66,10 @@ public class MailingController {
         new SmsService().sendSms(sms.getPhone(), sms.getCpf(), sms.getTexto());
     }
 
+    @RequestMapping(value = "/buscaDividas/{cpf}", method = RequestMethod.GET)
+    public String findByCPF(@PathVariable("cpf") String cpf){
+        return  service.findConsolidatedByCPF(cpf);
+    };
 
 
 }

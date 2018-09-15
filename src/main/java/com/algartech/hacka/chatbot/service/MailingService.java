@@ -4,7 +4,6 @@ import com.algartech.hacka.chatbot.jobs.MailingJob;
 import com.algartech.hacka.chatbot.model.Mailing;
 import com.algartech.hacka.chatbot.repository.MailingRepository;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.br.CPF;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -15,13 +14,15 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -147,35 +148,144 @@ public class MailingService {
     }
 
 
-    public String findConsolidatedByCPF(String cpf){
+    public String findConsolidatedByCPF(String cpf) {
         Mailing mailing = new Mailing();
         mailing.setCpf(cpf);
         mailing.setVal_princ(new BigDecimal(0));
 
         List<Mailing> mailings = repository.findByCpf(cpf);
 
-        for(Mailing ml : mailings){
+        for (Mailing ml : mailings) {
             mailing.setNom_clien(ml.getNom_clien());
-            mailing.setVal_princ( mailing.getVal_princ().add(ml.getVal_princ()) );
-            if(mailing.getDat_venci() == null || mailing.getDat_venci().compareTo(ml.getDat_venci())<0){
+            mailing.setVal_princ(mailing.getVal_princ().add(ml.getVal_princ()));
+            if (mailing.getDat_venci() == null || mailing.getDat_venci().compareTo(ml.getDat_venci()) < 0) {
                 mailing.setDat_venci(ml.getDat_venci());
             }
         }
 
-        String txtReturn = "Sua dívida atual é de R$"+getValorAvista(mailing) +" para pagamento à vista e R$ "+getValorAPrazo(mailing) +" para pagamento parcelado.\n" +
+        String txtReturn = "Sua dívida atual é de R$" + getValorAvista(mailing) + " para pagamento à vista e R$ " + getValorAPrazo(mailing) + " para pagamento parcelado.\n" +
                 "Como deseja pagar sua dívida?";
 
 
         return txtReturn;
     }
 
-    private String getValorAvista(Mailing mailing) {
+    private String getValorAPrazo(Mailing mailing) {
 
-        return mailing.getVal_princ().toString();
+        int diasAtraso = new Date().compareTo(mailing.getDat_venci());
+        int diasDesprezo = 0;
+        Double taxa = 0D;
+
+        if (diasAtraso >= 5 && diasAtraso <= 21) {
+            diasDesprezo = 0;
+            taxa = 12D;
+        } else if (diasAtraso >= 5 && diasAtraso <= 21) {
+            diasDesprezo = 30;
+            taxa = 12D;
+
+        } else if (diasAtraso >= 61 && diasAtraso <= 81) {
+            diasDesprezo = 60;
+            taxa = 12D;
+
+        } else if (diasAtraso >= 91 && diasAtraso <= 111) {
+            diasDesprezo = 90;
+            taxa = 4.99D;
+
+        } else if (diasAtraso >= 121 && diasAtraso <= 141) {
+            diasDesprezo = 120;
+            taxa = 4.99D;
+
+        } else if (diasAtraso >= 151 && diasAtraso <= 171) {
+            diasDesprezo = 150;
+            taxa = 4.99D;
+
+        } else if (diasAtraso >= 181 && diasAtraso <= 201) {
+            diasDesprezo = 180;
+            taxa = 4.99D;
+
+        } else if (diasAtraso >= 211 && diasAtraso <= 231) {
+            diasDesprezo = 210;
+            taxa = 4.99D;
+
+        } else if (diasAtraso >= 241 && diasAtraso <= 261) {
+            diasDesprezo = 240;
+            taxa = 4.99D;
+
+        } else if (diasAtraso >= 271 && diasAtraso <= 291) {
+            diasDesprezo = 270;
+            taxa = 4.99D;
+
+        } else if (diasAtraso >= 301 && diasAtraso <= 321) {
+            diasDesprezo = 300;
+            taxa = 4.99D;
+
+        } else if (diasAtraso >= 331 && diasAtraso <= 351) {
+            diasDesprezo = 330;
+            taxa = 4.99D;
+
+        } else {
+            diasDesprezo = 0;
+            taxa = 0D;
+        }
+        Double valora = (Double) mailing.getVal_princ().doubleValue() * (taxa / 100 + 1);
+        Double valorB = Double.valueOf(diasAtraso - diasDesprezo);
+
+        Double valorFinal = Math.pow(valora, valorB);
+        return valorFinal.toString();
     }
 
-    private String getValorAPrazo(Mailing mailing) {
-        return mailing.getVal_princ().toString();
+    private String getValorAvista(Mailing mailing) {
+
+
+        int diasAtraso = new Date().compareTo(mailing.getDat_venci());
+        int diasDesprezo = 0;
+        Double taxa = 0D;
+        int desconto = 0;
+
+        if (diasAtraso >= 40 && diasAtraso <= 60) {
+            desconto = 5;
+        } else if (diasAtraso >= 61 && diasAtraso <= 90) {
+            desconto = 15;
+
+        } else if (diasAtraso >= 91 && diasAtraso <= 120) {
+            desconto = 20;
+
+        } else if (diasAtraso >= 121 && diasAtraso <= 180) {
+            desconto = 25;
+
+        } else if (diasAtraso >= 181 && diasAtraso <= 270) {
+            desconto = 35;
+
+        } else if (diasAtraso >= 271 && diasAtraso <= 360) {
+            desconto = 50;
+
+        } else if (diasAtraso >= 361 && diasAtraso <= 540) {
+            desconto = 75;
+
+        } else if (diasAtraso >= 541 && diasAtraso <= 720) {
+            desconto = 75;
+
+        } else if (diasAtraso >= 721 && diasAtraso <= 1080) {
+            desconto = 80;
+
+        } else if (diasAtraso >= 1081 && diasAtraso <= 1800) {
+            desconto = 90;
+
+        } else if (diasAtraso >= 1801 && diasAtraso <= 2520) {
+            desconto = 95;
+
+        } else if (diasAtraso >= 2521) {
+            desconto = 95;
+
+        } else {
+            desconto = 0;
+        }
+        return String.valueOf(round(mailing.getVal_princ().subtract(mailing.getVal_princ().multiply(new BigDecimal(desconto / 100))),2));
+    }
+
+    public static double round(BigDecimal bd1, int scale) {
+        BigDecimal bd2 = bd1.setScale(scale, BigDecimal.ROUND_HALF_UP);
+        return bd2.doubleValue();
     }
 
 }
