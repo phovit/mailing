@@ -62,7 +62,7 @@ public class MailingController {
     }
 
 
-    @RequestMapping(value = "/sendSms", method = RequestMethod.POST)
+    @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public void sendSms(@RequestBody SmsDTO sms){
 
         new SmsService().sendSms(sms.getPhone(), sms.getCpf(), sms.getTexto());
