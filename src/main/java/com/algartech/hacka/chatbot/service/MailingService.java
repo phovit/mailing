@@ -163,7 +163,7 @@ public class MailingService {
             }
         }
 
-        String txtReturn = "Sua dívida atual é de R$" + getValorAvista(mailing) + " para pagamento à vista e R$ " + getValorAPrazo(mailing) + " para pagamento parcelado.\n" +
+        String txtReturn = "Sua dívida atual é de R$" + getValorAvista(mailing) + " para pagamento à vista e R$ " + getValorAPrazo(mailing) + " para pagamento parcelado." +
                 "Como deseja pagar sua dívida?";
 
 
