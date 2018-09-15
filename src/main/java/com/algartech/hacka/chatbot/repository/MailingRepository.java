@@ -5,6 +5,8 @@ import com.algartech.hacka.chatbot.model.Mailing;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -15,4 +17,6 @@ public interface MailingRepository extends MongoRepository<Mailing, Integer> {
 
 
     public List<Mailing> findByCpf(String cpf);
+
+
 }

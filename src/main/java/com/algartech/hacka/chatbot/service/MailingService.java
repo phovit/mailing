@@ -2,6 +2,7 @@ package com.algartech.hacka.chatbot.service;
 
 import com.algartech.hacka.chatbot.jobs.MailingJob;
 import com.algartech.hacka.chatbot.model.Mailing;
+import com.algartech.hacka.chatbot.model.ResponseDTO;
 import com.algartech.hacka.chatbot.repository.MailingRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronScheduleBuilder;
@@ -19,8 +20,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -61,10 +61,14 @@ public class MailingService {
 
     }
 
+    public static double round(BigDecimal bd1, int scale) {
+        BigDecimal bd2 = bd1.setScale(scale, BigDecimal.ROUND_HALF_UP);
+        return bd2.doubleValue();
+    }
+
     public List<Mailing> findAll() {
         return repository.findAll();
     }
-
 
     public void importFile(String filename) {
 
@@ -146,7 +150,6 @@ public class MailingService {
         }
 
     }
-
 
     public String findConsolidatedByCPF(String cpf) {
         Mailing mailing = new Mailing();
@@ -280,12 +283,29 @@ public class MailingService {
         } else {
             desconto = 0;
         }
-        return String.valueOf(round(mailing.getVal_princ().subtract(mailing.getVal_princ().multiply(new BigDecimal(desconto / 100))),2));
+        return String.valueOf(round(mailing.getVal_princ().subtract(mailing.getVal_princ().multiply(new BigDecimal(desconto / 100))), 2));
     }
 
-    public static double round(BigDecimal bd1, int scale) {
-        BigDecimal bd2 = bd1.setScale(scale, BigDecimal.ROUND_HALF_UP);
-        return bd2.doubleValue();
+    public Mailing[] getAtrasados() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        Mailing cli2 = null;
+        try {
+            cli2 = new Mailing("1", "01", new Date(format.parse("20180910").getTime()), "1", "1", "36060615600", "1", "36060615600", "ANTONIO LOURENCO CORREA", new Date(format.parse("19560420").getTime()), "AMAZONAS", "43", "", "CENTRO", "LAGAMAR", "MG", "12976019086", "12976019102", "karlosgc@algartech.com", "3", "TELECOM", "000001190156", new Date(format.parse("20180307").getTime()), "0000000000000000000242131323/2", new Date(format.parse("20180221").getTime()), null, new BigDecimal(00000000000024.6700), "1");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Mailing[] ml = new Mailing[1];
+        ml[1] = cli2;
+        return ml;
     }
 
+    public ResponseDTO getTextNegociacao(String formaNegociacao) {
+        String str = "";
+        if("PARCELADO".equalsIgnoreCase(formaNegociacao)){
+            str = "Que bacana! Temos duas opções para negociar a sua dívida. Você pode determinar uma quantidade de parcelas ou o valor que deseja pagar mensalmente. Qual dos métodos você deseja usar?";
+        }else{
+            str = "Que bacana! Neste caso, você acaba de ganhar um super desconto!";
+        }
+        return new ResponseDTO(str);
+    }
 }

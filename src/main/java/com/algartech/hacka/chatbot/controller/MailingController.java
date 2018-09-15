@@ -1,6 +1,7 @@
 package com.algartech.hacka.chatbot.controller;
 
 import com.algartech.hacka.chatbot.model.EmailDTO;
+import com.algartech.hacka.chatbot.model.GenericRequestDTO;
 import com.algartech.hacka.chatbot.model.Mailing;
 import com.algartech.hacka.chatbot.model.ResponseDTO;
 import com.algartech.hacka.chatbot.model.SmsDTO;
@@ -72,6 +73,10 @@ public class MailingController {
         return  new ResponseDTO( service.findConsolidatedByCPF(cpf));
     };
 
+    @RequestMapping(value = "/negociacao", method = RequestMethod.POST)
+    public ResponseDTO formaNegociacao(@RequestBody GenericRequestDTO view){
+        return service.getTextNegociacao(view.getFormaNegociacao());
+    }
 
 }
 
