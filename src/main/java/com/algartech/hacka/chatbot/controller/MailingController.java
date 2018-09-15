@@ -1,6 +1,8 @@
 package com.algartech.hacka.chatbot.controller;
 
+import com.algartech.hacka.chatbot.model.EmailDTO;
 import com.algartech.hacka.chatbot.model.Mailing;
+import com.algartech.hacka.chatbot.model.SmsDTO;
 import com.algartech.hacka.chatbot.service.EmailService;
 import com.algartech.hacka.chatbot.service.MailingService;
 import com.algartech.hacka.chatbot.service.SmsService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by pauloho on 15/09/18.
@@ -47,16 +50,20 @@ public class MailingController {
 
 
     @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
-    public void sendEmail(@RequestParam String assunto,@RequestParam String conteudo,@RequestParam String email ){
+    public void sendEmail(@RequestBody EmailDTO email ){
+        String assunto = email.getAssunto();
+        String conteudo = email.getConteudo();
+        String texto  = email.getEmail();
         String grantCode = new EmailService().generateGrantCode();
         String token = new EmailService().generateToken(grantCode);
-        new EmailService().sendEmail(token, assunto, conteudo,email);
+        new EmailService().sendEmail(token, assunto, conteudo,texto);
     }
 
 
     @RequestMapping(value = "/sendSms", method = RequestMethod.POST)
-    public void sendSms(@RequestParam(value = "phone") String phone, @RequestParam(name = "cpf") String cpf, @RequestParam(required = false) String texto ){
-        new SmsService().sendSms(phone, cpf, texto);
+    public void sendSms(@RequestBody SmsDTO sms){
+
+        new SmsService().sendSms(sms.getPhone(), sms.getCpf(), sms.getTexto());
     }
 
 
