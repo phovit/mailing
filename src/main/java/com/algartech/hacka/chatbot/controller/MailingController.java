@@ -2,6 +2,7 @@ package com.algartech.hacka.chatbot.controller;
 
 import com.algartech.hacka.chatbot.model.EmailDTO;
 import com.algartech.hacka.chatbot.model.Mailing;
+import com.algartech.hacka.chatbot.model.ResponseDTO;
 import com.algartech.hacka.chatbot.model.SmsDTO;
 import com.algartech.hacka.chatbot.service.EmailService;
 import com.algartech.hacka.chatbot.service.MailingService;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by pauloho on 15/09/18.
@@ -67,8 +67,9 @@ public class MailingController {
     }
 
     @RequestMapping(value = "/dividas/{cpf}", method = RequestMethod.GET)
-    public String findByCPF(@PathVariable("cpf") String cpf){
-        return  service.findConsolidatedByCPF(cpf);
+    public ResponseDTO findByCPF(@PathVariable("cpf") String cpf){
+
+        return  new ResponseDTO( service.findConsolidatedByCPF(cpf));
     };
 
 
