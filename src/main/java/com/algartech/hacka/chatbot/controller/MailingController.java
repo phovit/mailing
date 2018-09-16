@@ -136,7 +136,6 @@ public class MailingController {
         return new ResponseDTO("Deseja receber os códigos de barras por SMS?");
     }
 
-git add
 
     @RequestMapping(value = "/sendSms", method = RequestMethod.POST)
     public ResponseDTO enviaSms(@RequestBody GenericRequestDTO view) {
