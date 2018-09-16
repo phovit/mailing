@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -109,6 +110,8 @@ public class MailingController {
 
 
         Double qtdParcelas = (valorRetorno - saldo)/ view.getValor();
+        DecimalFormat formato = new DecimalFormat("#.##");
+        saldo = Double.valueOf(formato.format(saldo));
 
         retorno = "Esse valor é possível! Então serão "+qtdParcelas+" parcelas de R$"+view.getValor()+". ";
         if(saldo>0){
